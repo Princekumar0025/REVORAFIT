@@ -36,5 +36,11 @@ const server = app.listen(
 process.on('unhandledRejection', (err, promise) => {
   console.log(`Error: ${err.message}`);
   // Close server & exit process
-  server.close(() => process.exit(1));
+  if(server) {
+    server.close(() => process.exit(1));
+  } else {
+    process.exit(1);
+  }
 });
+
+module.exports = app;
