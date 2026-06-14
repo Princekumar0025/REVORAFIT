@@ -13,7 +13,7 @@
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.4.9",
     "cloudinary": "^2.6.1",
-    "next": "15.3.2",
+    "next": "latest",
     "next-auth": "^4.24.11",
     "razorpay": "^2.9.6",
     "react": "^19.0.0",
@@ -28,7 +28,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "eslint": "^9",
-    "eslint-config-next": "15.3.2",
+    "eslint-config-next": "latest",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1"
   }
