@@ -14,7 +14,7 @@ export default function FeedbackSection() {
 
   const fetchFeedbacks = async () => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
       const res = await fetch(`${API_URL}/api/feedback`);
       const data = await res.json();
       setFeedbacks(data || []);
@@ -37,7 +37,7 @@ export default function FeedbackSection() {
 
     setSubmitting(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
       const res = await fetch(`${API_URL}/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

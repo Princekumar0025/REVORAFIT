@@ -54,14 +54,14 @@ export default function CheckoutPage() {
       };
 
       if (paymentMethod === 'cod') {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
         const order = await res.json();
         dispatch({ type: 'CLEAR_CART' });
         router.push(`/order/${order._id}`);
       } else {
         const loaded = await loadRazorpay();
         if (!loaded) { toast.error('Payment gateway failed to load'); setPlacing(false); return; }
-        const rzpOrderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/payment/create-order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: total }) });
+        const rzpOrderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/payment/create-order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: total }) });
         const rzpOrder = await rzpOrderRes.json();
         if (rzpOrder.error) { toast.error(rzpOrder.error); setPlacing(false); return; }
         const options = {
@@ -74,13 +74,13 @@ export default function CheckoutPage() {
           prefill: { name: form.name, email: form.email, contact: form.phone },
           theme: { color: '#7ED957' },
           handler: async (response) => {
-            const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/payment/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(response) });
+            const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/payment/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(response) });
             const verifyData = await verifyRes.json();
             if (verifyData.message === 'Payment verified successfully') {
               orderData.paymentStatus = 'paid';
               orderData.razorpayOrderId = rzpOrder.id;
               orderData.razorpayPaymentId = response.razorpay_payment_id;
-              const orderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
+              const orderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
               const createdOrder = await orderRes.json();
               dispatch({ type: 'CLEAR_CART' });
               router.push(`/order/${createdOrder._id}`);

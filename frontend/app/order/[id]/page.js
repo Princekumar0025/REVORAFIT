@@ -11,7 +11,7 @@ export default function OrderPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/${id}`).then((r) => r.json()).then((d) => { setOrder(d); setLoading(false); }).catch(() => setLoading(false));
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/orders/${id}`).then((r) => r.json()).then((d) => { setOrder(d); setLoading(false); }).catch(() => setLoading(false));
   }, [id]);
 
   if (loading) return <div className="page-content loading-container"><div className="spinner" /></div>;
