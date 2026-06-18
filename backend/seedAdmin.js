@@ -8,8 +8,8 @@ const seedAdmin = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/revorafit');
 
-    const email = 'manualclinicphysio2308@gmail.com';
-    const password = '@ammar076';
+    const email = 'sharmaprince2287@gmail.com';
+    const password = 'Prince@76';
 
     const existingAdmin = await User.findOne({ email });
 

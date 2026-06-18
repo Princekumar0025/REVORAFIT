@@ -13,13 +13,13 @@ const User = require('./models/User');
 
 const seedAdmin = async () => {
   try {
-    const email = 'manualclinicphysio2308@gmail.com';
+    const email = 'sharmaprince2287@gmail.com';
     const existingAdmin = await User.findOne({ email });
     if (!existingAdmin) {
       await User.create({
         name: 'Admin',
         email,
-        password: '@ammar076',
+        password: 'Prince@76',
         role: 'admin',
         authProvider: 'credentials',
         emailVerified: true
