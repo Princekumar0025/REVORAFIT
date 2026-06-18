@@ -20,7 +20,8 @@ const providers = [
     },
     async authorize(credentials) {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/login`, {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://revorafit.vercel.app';
+        const res = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -45,7 +46,8 @@ const authOptions = {
     async signIn({ user, account, profile }) {
       if (account.provider === 'google' || account.provider === 'apple') {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/oauth`, {
+          const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://revorafit.vercel.app';
+          const res = await fetch(`${API_URL}/api/auth/oauth`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
