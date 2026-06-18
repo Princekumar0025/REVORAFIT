@@ -5,7 +5,12 @@ const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true, minlength: 6 },
+    password: { 
+      type: String, 
+      required: function() { return this.authProvider === 'credentials'; }, 
+      minlength: 6 
+    },
+    authProvider: { type: String, enum: ['credentials', 'google', 'apple'], default: 'credentials' },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     phone: String,
     avatar: String,
@@ -30,12 +35,13 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre('save', async function () {
-  if (!this.isModified('password')) return;
+  if (!this.isModified('password') || !this.password) return;
   const salt = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
+  if (!this.password) return false; // OAuth users might not have a password
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
