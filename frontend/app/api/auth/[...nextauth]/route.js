@@ -4,6 +4,14 @@ import GoogleProvider from 'next-auth/providers/google';
 import AppleProvider from 'next-auth/providers/apple';
 
 const providers = [
+  GoogleProvider({
+    clientId: process.env.GOOGLE_CLIENT_ID || 'dummy_google_client_id_please_configure',
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'dummy_google_secret_please_configure',
+  }),
+  AppleProvider({
+    clientId: process.env.APPLE_ID || 'dummy_apple_id_please_configure',
+    clientSecret: process.env.APPLE_SECRET || 'dummy_apple_secret_please_configure',
+  }),
   CredentialsProvider({
     name: 'credentials',
     credentials: {
@@ -30,20 +38,6 @@ const providers = [
     },
   }),
 ];
-
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-  providers.push(GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  }));
-}
-
-if (process.env.APPLE_ID && process.env.APPLE_SECRET) {
-  providers.push(AppleProvider({
-    clientId: process.env.APPLE_ID,
-    clientSecret: process.env.APPLE_SECRET,
-  }));
-}
 
 const handler = NextAuth({
   providers,
