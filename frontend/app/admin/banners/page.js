@@ -12,7 +12,7 @@ export default function AdminBanners() {
 
   const load = async () => {
     setLoading(true);
-    const res = await fetch('/api/banners');
+    const res = await fetch('https://revorafit.vercel.app/api/banners');
     const data = await res.json();
     setBanners(data || []);
     setLoading(false);
@@ -26,7 +26,7 @@ export default function AdminBanners() {
     setUploading(true);
     const fd = new FormData();
     fd.append('file', file);
-    const res = await fetch('/api/upload', { method: 'POST', body: fd });
+    const res = await fetch('https://revorafit.vercel.app/api/upload', { method: 'POST', body: fd });
     const data = await res.json();
     if (data.url) { setForm({ ...form, image: data.url }); toast.success('Image uploaded!'); } else toast.error('Upload failed');
     setUploading(false);
@@ -35,20 +35,20 @@ export default function AdminBanners() {
   const handleSave = async (e) => {
     e.preventDefault();
     if (!form.image) return toast.error('Image is required');
-    const res = await fetch('/api/banners', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    const res = await fetch('https://revorafit.vercel.app/api/banners', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
     const data = await res.json();
     if (data.error) toast.error(data.error);
     else { toast.success('Banner added'); setShowForm(false); load(); }
   };
 
   const toggleStatus = async (id, current) => {
-    const res = await fetch(`/api/banners/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ active: !current }) });
+    const res = await fetch(`https://revorafit.vercel.app/api/banners/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ active: !current }) });
     if (res.ok) { toast.success('Status updated'); load(); }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete banner?')) return;
-    const res = await fetch(`/api/banners/${id}`, { method: 'DELETE' });
+    const res = await fetch(`https://revorafit.vercel.app/api/banners/${id}`, { method: 'DELETE' });
     if (res.ok) { toast.success('Banner deleted'); load(); }
   };
 

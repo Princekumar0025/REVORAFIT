@@ -13,7 +13,7 @@ export default function CartPage() {
     if (!couponCode.trim()) return;
     setApplying(true);
     try {
-      const res = await fetch('/api/coupons/validate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: couponCode, cartTotal: subtotal }) });
+      const res = await fetch('https://revorafit.vercel.app/api/coupons/validate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: couponCode, cartTotal: subtotal }) });
       const data = await res.json();
       if (data.valid) { dispatch({ type: 'SET_COUPON', payload: { code: data.coupon.code, discount: data.discount } }); toast.success(`Coupon applied! ₹${data.discount} off`); }
       else toast.error(data.error);

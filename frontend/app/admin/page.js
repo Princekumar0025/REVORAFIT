@@ -7,7 +7,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/analytics').then((r) => r.json()).then((d) => { setStats(d); setLoading(false); }).catch(() => setLoading(false));
+    fetch('https://revorafit.vercel.app/api/analytics').then((r) => r.json()).then((d) => { setStats(d); setLoading(false); }).catch(() => setLoading(false));
   }, []);
 
   const STATUS_COLOR = { placed: 'info', confirmed: 'warning', packed: 'warning', shipped: 'info', delivered: 'primary', cancelled: 'danger' };

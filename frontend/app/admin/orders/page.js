@@ -12,7 +12,7 @@ export default function AdminOrders() {
 
   const load = async () => {
     setLoading(true);
-    const res = await fetch('/api/orders?limit=50');
+    const res = await fetch('https://revorafit.vercel.app/api/orders?limit=50');
     const data = await res.json();
     setOrders(data.orders || []);
     setLoading(false);
@@ -21,7 +21,7 @@ export default function AdminOrders() {
   useEffect(() => { load(); }, []);
 
   const updateStatus = async (orderId, status) => {
-    const res = await fetch(`/api/orders/${orderId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orderStatus: status }) });
+    const res = await fetch(`https://revorafit.vercel.app/api/orders/${orderId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ orderStatus: status }) });
     const data = await res.json();
     if (data.error) toast.error(data.error);
     else { toast.success(`Order marked as ${status}`); load(); if (selected?._id === orderId) setSelected({ ...selected, orderStatus: status }); }

@@ -14,7 +14,7 @@ export default function FeedbackSection() {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await fetch(`/api/feedback`);
+      const res = await fetch(`https://revorafit.vercel.app/api/feedback`);
       if (!res.ok) {
         throw new Error(`HTTP Error ${res.status} when fetching from /api/feedback`);
       }
@@ -39,7 +39,7 @@ export default function FeedbackSection() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`/api/feedback`, {
+      const res = await fetch(`https://revorafit.vercel.app/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, rating, message }),

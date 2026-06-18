@@ -11,7 +11,7 @@ export default function AdminCoupons() {
 
   const load = async () => {
     setLoading(true);
-    const res = await fetch('/api/coupons');
+    const res = await fetch('https://revorafit.vercel.app/api/coupons');
     const data = await res.json();
     setCoupons(data || []);
     setLoading(false);
@@ -23,7 +23,7 @@ export default function AdminCoupons() {
     e.preventDefault();
     setSaving(true);
     const payload = { ...form, code: form.code.toUpperCase(), value: Number(form.value), minOrderAmount: Number(form.minOrderAmount), maxDiscount: form.maxDiscount ? Number(form.maxDiscount) : undefined, maxUses: Number(form.maxUses) };
-    const res = await fetch('/api/coupons', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const res = await fetch('https://revorafit.vercel.app/api/coupons', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const data = await res.json();
     if (data.error) toast.error(data.error);
     else { toast.success('Coupon created!'); setShowForm(false); load(); }
@@ -31,13 +31,13 @@ export default function AdminCoupons() {
   };
 
   const toggleStatus = async (id, current) => {
-    const res = await fetch(`/api/coupons/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ active: !current }) });
+    const res = await fetch(`https://revorafit.vercel.app/api/coupons/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ active: !current }) });
     if (res.ok) { toast.success('Status updated'); load(); }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this coupon?')) return;
-    const res = await fetch(`/api/coupons/${id}`, { method: 'DELETE' });
+    const res = await fetch(`https://revorafit.vercel.app/api/coupons/${id}`, { method: 'DELETE' });
     if (res.ok) { toast.success('Coupon deleted'); load(); }
   };
 

@@ -8,7 +8,7 @@ export default function AdminUsers() {
 
   const load = async () => {
     setLoading(true);
-    const res = await fetch('/api/users');
+    const res = await fetch('https://revorafit.vercel.app/api/users');
     const data = await res.json();
     setUsers(data || []);
     setLoading(false);
@@ -18,13 +18,13 @@ export default function AdminUsers() {
 
   const toggleBlock = async (id, current) => {
     if (!window.confirm(current ? 'Unblock this user?' : 'Block this user? They will not be able to login.')) return;
-    const res = await fetch(`/api/users/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ blocked: !current }) });
+    const res = await fetch(`https://revorafit.vercel.app/api/users/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ blocked: !current }) });
     if (res.ok) { toast.success(current ? 'User unblocked' : 'User blocked'); load(); }
   };
 
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Delete user ${name}? This cannot be undone.`)) return;
-    const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
+    const res = await fetch(`https://revorafit.vercel.app/api/users/${id}`, { method: 'DELETE' });
     if (res.ok) { toast.success('User deleted'); load(); }
   };
 
