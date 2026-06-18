@@ -17,7 +17,7 @@ export default function AdminProducts() {
 
   const load = async () => {
     setLoading(true);
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+    const API_URL = '';
     const res = await fetch(`${API_URL}/api/products?limit=100`);
     const data = await res.json();
     setProducts(data.products || []);
@@ -64,7 +64,7 @@ export default function AdminProducts() {
       images: imageUrls.filter(Boolean),
       slug: form.slug || form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     };
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+    const API_URL = '';
     const url = editId ? `${API_URL}/api/products/${editId}` : `${API_URL}/api/products`;
     const method = editId ? 'PUT' : 'POST';
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -76,7 +76,7 @@ export default function AdminProducts() {
 
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return;
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+    const API_URL = '';
     const res = await fetch(`${API_URL}/api/products/${id}`, { method: 'DELETE' });
     const data = await res.json();
     if (data.error) toast.error(data.error);

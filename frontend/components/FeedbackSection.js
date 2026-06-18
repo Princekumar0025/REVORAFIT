@@ -13,17 +13,15 @@ export default function FeedbackSection() {
   const [submitting, setSubmitting] = useState(false);
 
   const fetchFeedbacks = async () => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
     try {
-      const res = await fetch(`${API_URL}/api/feedback`);
+      const res = await fetch(`/api/feedback`);
       if (!res.ok) {
-        throw new Error(`HTTP Error ${res.status} when fetching from ${API_URL}/api/feedback`);
+        throw new Error(`HTTP Error ${res.status} when fetching from /api/feedback`);
       }
       const data = await res.json();
       setFeedbacks(data || []);
     } catch (error) {
       console.error('Error fetching feedbacks:', error);
-      // Optional: toast.error(`Fetch failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -40,9 +38,8 @@ export default function FeedbackSection() {
     }
 
     setSubmitting(true);
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
     try {
-      const res = await fetch(`${API_URL}/api/feedback`, {
+      const res = await fetch(`/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, rating, message }),
@@ -50,7 +47,7 @@ export default function FeedbackSection() {
 
       if (!res.ok) {
         const text = await res.text();
-        throw new Error(`Backend Error (${res.status}): ${text.substring(0, 50)} | URL: ${API_URL}/api/feedback`);
+        throw new Error(`Backend Error (${res.status}): ${text.substring(0, 50)} | URL: /api/feedback`);
       }
 
       const data = await res.json();

@@ -22,7 +22,7 @@ export default function ProductPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+    const API_URL = '';
     fetch(`${API_URL}/api/products/${slug}`)
       .then((r) => r.json())
       .then((d) => { setProduct(d); setLoading(false); })
@@ -47,7 +47,7 @@ export default function ProductPage() {
       await fetch('/api/reviews', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: product._id, name: reviewName, rating: reviewRating, comment: reviewText }) });
       toast.success('Review submitted!');
       setReviewText(''); setReviewName(''); setReviewRating(5);
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+      const API_URL = '';
       const res = await fetch(`${API_URL}/api/products/${slug}`);
       setProduct(await res.json());
     } catch { toast.error('Failed to submit review'); }

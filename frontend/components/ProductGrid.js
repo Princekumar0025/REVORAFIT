@@ -27,7 +27,7 @@ export default function ProductGrid({ initialProducts = [], category, search, fe
       params.set('order', order);
       params.set('page', page);
       params.set('limit', limit || 12);
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+      const API_URL = '';
       const res = await fetch(`${API_URL}/api/products?${params}`);
       const data = await res.json();
       setProducts(data.products || []);

@@ -20,7 +20,7 @@ export default function MyOrdersPage() {
     const fetchOrders = async () => {
       if (!session?.user?.id) return;
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/orders?userId=${session.user.id}`);
+        const res = await fetch(`/api/orders?userId=${session.user.id}`);
         const data = await res.json();
         setOrders(data.orders || []);
       } catch (error) {
