@@ -9,6 +9,32 @@ dotenv.config();
 // Connect to database
 connectDB();
 
+const User = require('./models/User');
+
+const seedAdmin = async () => {
+  try {
+    const email = 'manualclinicphysio2308@gmail.com';
+    const existingAdmin = await User.findOne({ email });
+    if (!existingAdmin) {
+      await User.create({
+        name: 'Admin',
+        email,
+        password: '@ammar076',
+        role: 'admin',
+        authProvider: 'credentials',
+        emailVerified: true
+      });
+      console.log('Production Admin account created');
+    } else {
+      console.log('Production Admin account already exists');
+    }
+  } catch (err) {
+    console.error('Failed to seed admin:', err);
+  }
+};
+
+seedAdmin();
+
 const app = express();
 
 // Body parser

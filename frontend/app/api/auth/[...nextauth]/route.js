@@ -3,42 +3,50 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import AppleProvider from 'next-auth/providers/apple';
 
-const handler = NextAuth({
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-    }),
-    AppleProvider({
-      clientId: process.env.APPLE_ID || '',
-      clientSecret: process.env.APPLE_SECRET || '', // Can be generated using APPLE_TEAM_ID, APPLE_PRIVATE_KEY, APPLE_KEY_ID
-    }),
-    CredentialsProvider({
-      name: 'credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials) {
-        try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            })
-          });
+const providers = [
+  CredentialsProvider({
+    name: 'credentials',
+    credentials: {
+      email: { label: 'Email', type: 'email' },
+      password: { label: 'Password', type: 'password' },
+    },
+    async authorize(credentials) {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          })
+        });
 
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Authentication failed');
-          return data;
-        } catch (error) {
-          throw new Error(error.message);
-        }
-      },
-    }),
-  ],
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Authentication failed');
+        return data;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+  }),
+];
+
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.push(GoogleProvider({
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  }));
+}
+
+if (process.env.APPLE_ID && process.env.APPLE_SECRET) {
+  providers.push(AppleProvider({
+    clientId: process.env.APPLE_ID,
+    clientSecret: process.env.APPLE_SECRET,
+  }));
+}
+
+const handler = NextAuth({
+  providers,
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account.provider === 'google' || account.provider === 'apple') {
