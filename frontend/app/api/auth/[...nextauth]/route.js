@@ -39,7 +39,7 @@ const providers = [
   }),
 ];
 
-const handler = NextAuth({
+const authOptions = {
   providers,
   callbacks: {
     async signIn({ user, account, profile }) {
@@ -60,7 +60,6 @@ const handler = NextAuth({
           if (!res.ok) {
             return false;
           }
-          // Attach db info to user object so jwt callback gets it
           user.id = data.id;
           user.role = data.role;
           user.avatar = data.avatar;
@@ -94,7 +93,10 @@ const handler = NextAuth({
     error: '/auth/error',
   },
   session: { strategy: 'jwt' },
-  secret: process.env.NEXTAUTH_SECRET,
-});
+  secret: process.env.NEXTAUTH_SECRET || 'fallback_secret_for_development_only',
+  debug: true,
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
