@@ -18,7 +18,7 @@ const nextConfig = {
     NEXT_PUBLIC_RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
   },
   async rewrites() {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://revorafit.vercel.app';
+    const API_URL = 'https://revorafit.vercel.app';
     return [
       {
         source: '/api/feedback',
