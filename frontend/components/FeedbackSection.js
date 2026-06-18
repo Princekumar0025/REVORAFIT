@@ -13,13 +13,17 @@ export default function FeedbackSection() {
   const [submitting, setSubmitting] = useState(false);
 
   const fetchFeedbacks = async () => {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
       const res = await fetch(`${API_URL}/api/feedback`);
+      if (!res.ok) {
+        throw new Error(`HTTP Error ${res.status} when fetching from ${API_URL}/api/feedback`);
+      }
       const data = await res.json();
       setFeedbacks(data || []);
     } catch (error) {
       console.error('Error fetching feedbacks:', error);
+      // Optional: toast.error(`Fetch failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -36,27 +40,28 @@ export default function FeedbackSection() {
     }
 
     setSubmitting(true);
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
       const res = await fetch(`${API_URL}/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, rating, message }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to submit feedback');
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Backend Error (${res.status}): ${text.substring(0, 50)} | URL: ${API_URL}/api/feedback`);
+      }
 
+      const data = await res.json();
       toast.success('Thank you for your feedback!');
-      // Reset form
       setName('');
       setRating(5);
       setMessage('');
-      
-      // Refresh feedbacks
       fetchFeedbacks();
     } catch (error) {
-      toast.error(error.message);
+      console.error("Submit Feedback Error:", error);
+      toast.error(error.message, { duration: 6000 });
     } finally {
       setSubmitting(false);
     }
