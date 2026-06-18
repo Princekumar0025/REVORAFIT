@@ -31,20 +31,22 @@ async function handleProxy(request, { params }) {
   const targetUrl = `${backendUrl}/api/${path}${searchParams}`;
   
   try {
-    const headers = new Headers(request.headers);
-    // Remove host header to avoid SSL issues
-    headers.delete('host');
-    headers.delete('connection');
+    // Only forward safe headers to prevent backend crashes
+    const safeHeaders = new Headers();
+    const contentType = request.headers.get('content-type');
+    if (contentType) safeHeaders.set('content-type', contentType);
+    
+    const auth = request.headers.get('authorization');
+    if (auth) safeHeaders.set('authorization', auth);
     
     // Read the body if not GET/HEAD
     let body = null;
     if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method)) {
-      // Check if there's a body
-      const contentType = request.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         body = await request.text();
       } else if (contentType && contentType.includes('multipart/form-data')) {
-        body = await request.formData();
+        // For multipart, we should ideally not parse and just stream it
+        body = await request.blob();
       } else {
         try { body = await request.text(); } catch(e) {}
       }
@@ -52,7 +54,7 @@ async function handleProxy(request, { params }) {
 
     const response = await fetch(targetUrl, {
       method: request.method,
-      headers: headers,
+      headers: safeHeaders,
       body: body,
       redirect: 'manual'
     });
