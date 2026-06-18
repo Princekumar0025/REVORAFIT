@@ -60,8 +60,13 @@ const server = app.listen(
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
-  console.log(`Unhandled Rejection: ${err.message}`);
-  // In serverless, do NOT exit process.
+  console.log(`Error: ${err.message}`);
+  // Close server & exit process
+  if(server) {
+    server.close(() => process.exit(1));
+  } else {
+    process.exit(1);
+  }
 });
 
 module.exports = app;
