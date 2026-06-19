@@ -26,7 +26,7 @@ export default function AdminBanners() {
     setUploading(true);
     const fd = new FormData();
     fd.append('file', file);
-    const res = await fetch('https://revorafit.vercel.app/api/upload', { method: 'POST', body: fd });
+    const res = await fetch('/api/upload', { method: 'POST', body: fd });
     const data = await res.json();
     if (data.url) { setForm({ ...form, image: data.url }); toast.success('Image uploaded!'); } else toast.error('Upload failed');
     setUploading(false);

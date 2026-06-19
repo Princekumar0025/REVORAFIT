@@ -41,7 +41,7 @@ export default function AdminProducts() {
     setUploading(true);
     const fd = new FormData();
     fd.append('file', file);
-    const res = await fetch('https://revorafit.vercel.app/api/upload', { method: 'POST', body: fd });
+    const res = await fetch('/api/upload', { method: 'POST', body: fd });
     const data = await res.json();
     if (data.url) {
       setImageUrls((prev) => { const n = [...prev]; n[0] = data.url; return n; });
