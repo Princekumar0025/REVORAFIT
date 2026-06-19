@@ -14,9 +14,9 @@ export default function FeedbackSection() {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await fetch(`https://revorafit.vercel.app/api/feedback`);
+      const res = await fetch(`https://revorafit.vercel.app/api/reviews`);
       if (!res.ok) {
-        throw new Error(`HTTP Error ${res.status} when fetching from /api/feedback`);
+        throw new Error(`HTTP Error ${res.status} when fetching from /api/reviews`);
       }
       const data = await res.json();
       setFeedbacks(data || []);
@@ -39,7 +39,7 @@ export default function FeedbackSection() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`https://revorafit.vercel.app/api/feedback`, {
+      const res = await fetch(`https://revorafit.vercel.app/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, rating, message }),
@@ -47,7 +47,7 @@ export default function FeedbackSection() {
 
       if (!res.ok) {
         const text = await res.text();
-        throw new Error(`Backend Error (${res.status}): ${text.substring(0, 50)} | URL: /api/feedback`);
+        throw new Error(`Backend Error (${res.status}): ${text.substring(0, 50)} | URL: /api/reviews`);
       }
 
       const data = await res.json();

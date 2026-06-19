@@ -46,7 +46,7 @@ app.use(cors());
 // Mount routers
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/feedback', require('./routes/feedbackRoutes'));
+app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/payment', require('./routes/paymentRoutes'));
