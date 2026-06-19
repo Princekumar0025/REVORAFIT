@@ -11,10 +11,10 @@ cloudinary.config({
 export async function POST(request) {
   try {
     const formData = await request.formData();
-    const file = formData.get('image'); // Assuming the frontend appends 'image'
+    const file = formData.get('file') || formData.get('image');
 
     if (!file) {
-      return NextResponse.json({ error: 'No image provided' }, { status: 400 });
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
     // Convert the file to a buffer
