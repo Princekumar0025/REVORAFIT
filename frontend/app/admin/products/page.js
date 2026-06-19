@@ -47,7 +47,7 @@ export default function AdminProducts() {
       setImageUrls((prev) => { const n = [...prev]; n[0] = data.url; return n; });
       setForm((f) => ({ ...f, images: [data.url, ...f.images.slice(1)] }));
       toast.success('Image uploaded!');
-    } else toast.error('Upload failed');
+    } else toast.error(data.error || 'Upload failed');
     setUploading(false);
   };
 
